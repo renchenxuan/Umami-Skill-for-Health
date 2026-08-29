@@ -1,0 +1,1007 @@
+{
+  "categories": [
+    "蔬菜",
+    "水果",
+    "肉类",
+    "蛋奶",
+    "水产",
+    "主食",
+    "豆制品",
+    "菌菇",
+    "调味",
+    "坚果",
+    "其他"
+  ],
+  "foods": [
+    {
+      "name": "番茄",
+      "category": "蔬菜",
+      "emoji": "🍅",
+      "unit": "把"
+    },
+    {
+      "name": "土豆",
+      "category": "蔬菜",
+      "emoji": "🥔",
+      "unit": "把"
+    },
+    {
+      "name": "胡萝卜",
+      "category": "蔬菜",
+      "emoji": "🥕",
+      "unit": "把"
+    },
+    {
+      "name": "白萝卜",
+      "category": "蔬菜",
+      "emoji": "🥕",
+      "unit": "把"
+    },
+    {
+      "name": "黄瓜",
+      "category": "蔬菜",
+      "emoji": "🥒",
+      "unit": "把"
+    },
+    {
+      "name": "茄子",
+      "category": "蔬菜",
+      "emoji": "🍆",
+      "unit": "把"
+    },
+    {
+      "name": "西兰花",
+      "category": "蔬菜",
+      "emoji": "🥦",
+      "unit": "把"
+    },
+    {
+      "name": "花菜",
+      "category": "蔬菜",
+      "emoji": "🥦",
+      "unit": "把"
+    },
+    {
+      "name": "白菜",
+      "category": "蔬菜",
+      "emoji": "🥬",
+      "unit": "把"
+    },
+    {
+      "name": "菠菜",
+      "category": "蔬菜",
+      "emoji": "🥬",
+      "unit": "把"
+    },
+    {
+      "name": "生菜",
+      "category": "蔬菜",
+      "emoji": "🥬",
+      "unit": "把"
+    },
+    {
+      "name": "油菜",
+      "category": "蔬菜",
+      "emoji": "🥬",
+      "unit": "把"
+    },
+    {
+      "name": "芹菜",
+      "category": "蔬菜",
+      "emoji": "🥬",
+      "unit": "把"
+    },
+    {
+      "name": "韭菜",
+      "category": "蔬菜",
+      "emoji": "🌿",
+      "unit": "把"
+    },
+    {
+      "name": "香菜",
+      "category": "蔬菜",
+      "emoji": "🌿",
+      "unit": "把"
+    },
+    {
+      "name": "葱",
+      "category": "蔬菜",
+      "emoji": "🌿",
+      "unit": "把"
+    },
+    {
+      "name": "姜",
+      "category": "蔬菜",
+      "emoji": "🫚",
+      "unit": "把"
+    },
+    {
+      "name": "蒜",
+      "category": "蔬菜",
+      "emoji": "🧄",
+      "unit": "把"
+    },
+    {
+      "name": "洋葱",
+      "category": "蔬菜",
+      "emoji": "🧅",
+      "unit": "把"
+    },
+    {
+      "name": "青椒",
+      "category": "蔬菜",
+      "emoji": "🫑",
+      "unit": "把"
+    },
+    {
+      "name": "红椒",
+      "category": "蔬菜",
+      "emoji": "🌶️",
+      "unit": "把"
+    },
+    {
+      "name": "小米椒",
+      "category": "蔬菜",
+      "emoji": "🌶️",
+      "unit": "把"
+    },
+    {
+      "name": "南瓜",
+      "category": "蔬菜",
+      "emoji": "🎃",
+      "unit": "把"
+    },
+    {
+      "name": "冬瓜",
+      "category": "蔬菜",
+      "emoji": "🍈",
+      "unit": "把"
+    },
+    {
+      "name": "丝瓜",
+      "category": "蔬菜",
+      "emoji": "🥒",
+      "unit": "把"
+    },
+    {
+      "name": "苦瓜",
+      "category": "蔬菜",
+      "emoji": "🥒",
+      "unit": "把"
+    },
+    {
+      "name": "玉米",
+      "category": "蔬菜",
+      "emoji": "🌽",
+      "unit": "把"
+    },
+    {
+      "name": "山药",
+      "category": "蔬菜",
+      "emoji": "🥔",
+      "unit": "把"
+    },
+    {
+      "name": "莲藕",
+      "category": "蔬菜",
+      "emoji": "🪷",
+      "unit": "把"
+    },
+    {
+      "name": "豆角",
+      "category": "蔬菜",
+      "emoji": "🫛",
+      "unit": "把"
+    },
+    {
+      "name": "四季豆",
+      "category": "蔬菜",
+      "emoji": "🫛",
+      "unit": "把"
+    },
+    {
+      "name": "荷兰豆",
+      "category": "蔬菜",
+      "emoji": "🫛",
+      "unit": "把"
+    },
+    {
+      "name": "芦笋",
+      "category": "蔬菜",
+      "emoji": "🌱",
+      "unit": "把"
+    },
+    {
+      "name": "莴笋",
+      "category": "蔬菜",
+      "emoji": "🥬",
+      "unit": "把"
+    },
+    {
+      "name": "苹果",
+      "category": "水果",
+      "emoji": "🍎",
+      "unit": "个"
+    },
+    {
+      "name": "香蕉",
+      "category": "水果",
+      "emoji": "🍌",
+      "unit": "根"
+    },
+    {
+      "name": "橙子",
+      "category": "水果",
+      "emoji": "🍊",
+      "unit": "个"
+    },
+    {
+      "name": "橘子",
+      "category": "水果",
+      "emoji": "🍊",
+      "unit": "个"
+    },
+    {
+      "name": "柠檬",
+      "category": "水果",
+      "emoji": "🍋",
+      "unit": "个"
+    },
+    {
+      "name": "葡萄",
+      "category": "水果",
+      "emoji": "🍇",
+      "unit": "个"
+    },
+    {
+      "name": "草莓",
+      "category": "水果",
+      "emoji": "🍓",
+      "unit": "个"
+    },
+    {
+      "name": "蓝莓",
+      "category": "水果",
+      "emoji": "🫐",
+      "unit": "个"
+    },
+    {
+      "name": "桃子",
+      "category": "水果",
+      "emoji": "🍑",
+      "unit": "个"
+    },
+    {
+      "name": "樱桃",
+      "category": "水果",
+      "emoji": "🍒",
+      "unit": "个"
+    },
+    {
+      "name": "菠萝",
+      "category": "水果",
+      "emoji": "🍍",
+      "unit": "个"
+    },
+    {
+      "name": "芒果",
+      "category": "水果",
+      "emoji": "🥭",
+      "unit": "个"
+    },
+    {
+      "name": "猕猴桃",
+      "category": "水果",
+      "emoji": "🥝",
+      "unit": "个"
+    },
+    {
+      "name": "西瓜",
+      "category": "水果",
+      "emoji": "🍉",
+      "unit": "个"
+    },
+    {
+      "name": "哈密瓜",
+      "category": "水果",
+      "emoji": "🍈",
+      "unit": "个"
+    },
+    {
+      "name": "梨",
+      "category": "水果",
+      "emoji": "🍐",
+      "unit": "个"
+    },
+    {
+      "name": "火龙果",
+      "category": "水果",
+      "emoji": "🐉",
+      "unit": "个"
+    },
+    {
+      "name": "石榴",
+      "category": "水果",
+      "emoji": "🍎",
+      "unit": "个"
+    },
+    {
+      "name": "牛油果",
+      "category": "水果",
+      "emoji": "🥑",
+      "unit": "个"
+    },
+    {
+      "name": "柚子",
+      "category": "水果",
+      "emoji": "🍊",
+      "unit": "个"
+    },
+    {
+      "name": "猪肉",
+      "category": "肉类",
+      "emoji": "🥩",
+      "unit": "斤"
+    },
+    {
+      "name": "猪里脊",
+      "category": "肉类",
+      "emoji": "🥩",
+      "unit": "斤"
+    },
+    {
+      "name": "五花肉",
+      "category": "肉类",
+      "emoji": "🥓",
+      "unit": "斤"
+    },
+    {
+      "name": "排骨",
+      "category": "肉类",
+      "emoji": "🍖",
+      "unit": "斤"
+    },
+    {
+      "name": "牛肉",
+      "category": "肉类",
+      "emoji": "🥩",
+      "unit": "斤"
+    },
+    {
+      "name": "牛腩",
+      "category": "肉类",
+      "emoji": "🥩",
+      "unit": "斤"
+    },
+    {
+      "name": "牛排",
+      "category": "肉类",
+      "emoji": "🥩",
+      "unit": "块"
+    },
+    {
+      "name": "羊肉",
+      "category": "肉类",
+      "emoji": "🥩",
+      "unit": "斤"
+    },
+    {
+      "name": "鸡胸肉",
+      "category": "肉类",
+      "emoji": "🍗",
+      "unit": "块"
+    },
+    {
+      "name": "鸡腿",
+      "category": "肉类",
+      "emoji": "🍗",
+      "unit": "个"
+    },
+    {
+      "name": "鸡翅",
+      "category": "肉类",
+      "emoji": "🍗",
+      "unit": "个"
+    },
+    {
+      "name": "鸡爪",
+      "category": "肉类",
+      "emoji": "🍗",
+      "unit": "斤"
+    },
+    {
+      "name": "鸭肉",
+      "category": "肉类",
+      "emoji": "🦆",
+      "unit": "斤"
+    },
+    {
+      "name": "培根",
+      "category": "肉类",
+      "emoji": "🥓",
+      "unit": "斤"
+    },
+    {
+      "name": "火腿",
+      "category": "肉类",
+      "emoji": "🥓",
+      "unit": "根"
+    },
+    {
+      "name": "香肠",
+      "category": "肉类",
+      "emoji": "🌭",
+      "unit": "根"
+    },
+    {
+      "name": "午餐肉",
+      "category": "肉类",
+      "emoji": "🥫",
+      "unit": "罐"
+    },
+    {
+      "name": "鸡蛋",
+      "category": "蛋奶",
+      "emoji": "🥚",
+      "unit": "个"
+    },
+    {
+      "name": "鸭蛋",
+      "category": "蛋奶",
+      "emoji": "🥚",
+      "unit": "个"
+    },
+    {
+      "name": "鹌鹑蛋",
+      "category": "蛋奶",
+      "emoji": "🥚",
+      "unit": "个"
+    },
+    {
+      "name": "牛奶",
+      "category": "蛋奶",
+      "emoji": "🥛",
+      "unit": "盒"
+    },
+    {
+      "name": "酸奶",
+      "category": "蛋奶",
+      "emoji": "🥛",
+      "unit": "盒"
+    },
+    {
+      "name": "奶酪",
+      "category": "蛋奶",
+      "emoji": "🧀",
+      "unit": "块"
+    },
+    {
+      "name": "黄油",
+      "category": "蛋奶",
+      "emoji": "🧈",
+      "unit": "块"
+    },
+    {
+      "name": "奶油",
+      "category": "蛋奶",
+      "emoji": "🧁",
+      "unit": "个"
+    },
+    {
+      "name": "三文鱼",
+      "category": "水产",
+      "emoji": "🐟",
+      "unit": "块"
+    },
+    {
+      "name": "鲈鱼",
+      "category": "水产",
+      "emoji": "🐟",
+      "unit": "条"
+    },
+    {
+      "name": "鲫鱼",
+      "category": "水产",
+      "emoji": "🐟",
+      "unit": "条"
+    },
+    {
+      "name": "带鱼",
+      "category": "水产",
+      "emoji": "🐟",
+      "unit": "条"
+    },
+    {
+      "name": "龙利鱼",
+      "category": "水产",
+      "emoji": "🐟",
+      "unit": "片"
+    },
+    {
+      "name": "鳕鱼",
+      "category": "水产",
+      "emoji": "🐟",
+      "unit": "块"
+    },
+    {
+      "name": "虾",
+      "category": "水产",
+      "emoji": "🦐",
+      "unit": "斤"
+    },
+    {
+      "name": "虾仁",
+      "category": "水产",
+      "emoji": "🦐",
+      "unit": "斤"
+    },
+    {
+      "name": "螃蟹",
+      "category": "水产",
+      "emoji": "🦀",
+      "unit": "只"
+    },
+    {
+      "name": "扇贝",
+      "category": "水产",
+      "emoji": "🦪",
+      "unit": "斤"
+    },
+    {
+      "name": "蛤蜊",
+      "category": "水产",
+      "emoji": "🦪",
+      "unit": "斤"
+    },
+    {
+      "name": "鱿鱼",
+      "category": "水产",
+      "emoji": "🦑",
+      "unit": "条"
+    },
+    {
+      "name": "章鱼",
+      "category": "水产",
+      "emoji": "🐙",
+      "unit": "只"
+    },
+    {
+      "name": "海带",
+      "category": "水产",
+      "emoji": "🌿",
+      "unit": "袋"
+    },
+    {
+      "name": "紫菜",
+      "category": "水产",
+      "emoji": "🌿",
+      "unit": "袋"
+    },
+    {
+      "name": "大米",
+      "category": "主食",
+      "emoji": "🍚",
+      "unit": "kg"
+    },
+    {
+      "name": "糙米",
+      "category": "主食",
+      "emoji": "🍚",
+      "unit": "kg"
+    },
+    {
+      "name": "小米",
+      "category": "主食",
+      "emoji": "🌾",
+      "unit": "kg"
+    },
+    {
+      "name": "燕麦",
+      "category": "主食",
+      "emoji": "🌾",
+      "unit": "袋"
+    },
+    {
+      "name": "面粉",
+      "category": "主食",
+      "emoji": "🌾",
+      "unit": "kg"
+    },
+    {
+      "name": "面条",
+      "category": "主食",
+      "emoji": "🍜",
+      "unit": "把"
+    },
+    {
+      "name": "挂面",
+      "category": "主食",
+      "emoji": "🍜",
+      "unit": "袋"
+    },
+    {
+      "name": "方便面",
+      "category": "主食",
+      "emoji": "🍜",
+      "unit": "袋"
+    },
+    {
+      "name": "粉丝",
+      "category": "主食",
+      "emoji": "🍜",
+      "unit": "袋"
+    },
+    {
+      "name": "面包",
+      "category": "主食",
+      "emoji": "🍞",
+      "unit": "袋"
+    },
+    {
+      "name": "吐司",
+      "category": "主食",
+      "emoji": "🍞",
+      "unit": "袋"
+    },
+    {
+      "name": "馒头",
+      "category": "主食",
+      "emoji": "🥟",
+      "unit": "份"
+    },
+    {
+      "name": "饺子",
+      "category": "主食",
+      "emoji": "🥟",
+      "unit": "份"
+    },
+    {
+      "name": "包子",
+      "category": "主食",
+      "emoji": "🥟",
+      "unit": "份"
+    },
+    {
+      "name": "红薯",
+      "category": "主食",
+      "emoji": "🍠",
+      "unit": "份"
+    },
+    {
+      "name": "紫薯",
+      "category": "主食",
+      "emoji": "🍠",
+      "unit": "份"
+    },
+    {
+      "name": "藜麦",
+      "category": "主食",
+      "emoji": "🌾",
+      "unit": "kg"
+    },
+    {
+      "name": "豆腐",
+      "category": "豆制品",
+      "emoji": "🫛",
+      "unit": "块"
+    },
+    {
+      "name": "嫩豆腐",
+      "category": "豆制品",
+      "emoji": "🫛",
+      "unit": "盒"
+    },
+    {
+      "name": "豆干",
+      "category": "豆制品",
+      "emoji": "🫛",
+      "unit": "块"
+    },
+    {
+      "name": "腐竹",
+      "category": "豆制品",
+      "emoji": "🫛",
+      "unit": "袋"
+    },
+    {
+      "name": "豆浆",
+      "category": "豆制品",
+      "emoji": "🥛",
+      "unit": "瓶"
+    },
+    {
+      "name": "黄豆",
+      "category": "豆制品",
+      "emoji": "🫘",
+      "unit": "块"
+    },
+    {
+      "name": "绿豆",
+      "category": "豆制品",
+      "emoji": "🫘",
+      "unit": "块"
+    },
+    {
+      "name": "红豆",
+      "category": "豆制品",
+      "emoji": "🫘",
+      "unit": "块"
+    },
+    {
+      "name": "黑豆",
+      "category": "豆制品",
+      "emoji": "🫘",
+      "unit": "块"
+    },
+    {
+      "name": "鹰嘴豆",
+      "category": "豆制品",
+      "emoji": "🫘",
+      "unit": "块"
+    },
+    {
+      "name": "香菇",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "斤"
+    },
+    {
+      "name": "金针菇",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "斤"
+    },
+    {
+      "name": "杏鲍菇",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "斤"
+    },
+    {
+      "name": "平菇",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "斤"
+    },
+    {
+      "name": "木耳",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "袋"
+    },
+    {
+      "name": "银耳",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "朵"
+    },
+    {
+      "name": "口蘑",
+      "category": "菌菇",
+      "emoji": "🍄",
+      "unit": "斤"
+    },
+    {
+      "name": "盐",
+      "category": "调味",
+      "emoji": "🧂",
+      "unit": "瓶"
+    },
+    {
+      "name": "糖",
+      "category": "调味",
+      "emoji": "🧂",
+      "unit": "瓶"
+    },
+    {
+      "name": "生抽",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "老抽",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "醋",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "料酒",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "蚝油",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "豆瓣酱",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "辣椒酱",
+      "category": "调味",
+      "emoji": "🌶️",
+      "unit": "瓶"
+    },
+    {
+      "name": "番茄酱",
+      "category": "调味",
+      "emoji": "🥫",
+      "unit": "瓶"
+    },
+    {
+      "name": "酱油",
+      "category": "调味",
+      "emoji": "🫙",
+      "unit": "瓶"
+    },
+    {
+      "name": "食用油",
+      "category": "调味",
+      "emoji": "🫗",
+      "unit": "瓶"
+    },
+    {
+      "name": "橄榄油",
+      "category": "调味",
+      "emoji": "🫒",
+      "unit": "瓶"
+    },
+    {
+      "name": "芝麻油",
+      "category": "调味",
+      "emoji": "🫗",
+      "unit": "瓶"
+    },
+    {
+      "name": "花椒",
+      "category": "调味",
+      "emoji": "🌶️",
+      "unit": "瓶"
+    },
+    {
+      "name": "八角",
+      "category": "调味",
+      "emoji": "🌟",
+      "unit": "瓶"
+    },
+    {
+      "name": "桂皮",
+      "category": "调味",
+      "emoji": "🪵",
+      "unit": "瓶"
+    },
+    {
+      "name": "黑胡椒",
+      "category": "调味",
+      "emoji": "🧂",
+      "unit": "瓶"
+    },
+    {
+      "name": "孜然",
+      "category": "调味",
+      "emoji": "🧂",
+      "unit": "瓶"
+    },
+    {
+      "name": "蜂蜜",
+      "category": "调味",
+      "emoji": "🍯",
+      "unit": "瓶"
+    },
+    {
+      "name": "咖喱",
+      "category": "调味",
+      "emoji": "🍛",
+      "unit": "瓶"
+    },
+    {
+      "name": "核桃",
+      "category": "坚果",
+      "emoji": "🌰",
+      "unit": "袋"
+    },
+    {
+      "name": "杏仁",
+      "category": "坚果",
+      "emoji": "🌰",
+      "unit": "袋"
+    },
+    {
+      "name": "花生",
+      "category": "坚果",
+      "emoji": "🥜",
+      "unit": "袋"
+    },
+    {
+      "name": "腰果",
+      "category": "坚果",
+      "emoji": "🌰",
+      "unit": "袋"
+    },
+    {
+      "name": "开心果",
+      "category": "坚果",
+      "emoji": "🌰",
+      "unit": "袋"
+    },
+    {
+      "name": "瓜子",
+      "category": "坚果",
+      "emoji": "🌻",
+      "unit": "袋"
+    },
+    {
+      "name": "芝麻",
+      "category": "坚果",
+      "emoji": "🌾",
+      "unit": "袋"
+    },
+    {
+      "name": "枸杞",
+      "category": "其他",
+      "emoji": "🔴",
+      "unit": "份"
+    },
+    {
+      "name": "红枣",
+      "category": "其他",
+      "emoji": "🔴",
+      "unit": "份"
+    },
+    {
+      "name": "桂圆",
+      "category": "其他",
+      "emoji": "🟤",
+      "unit": "份"
+    },
+    {
+      "name": "莲子",
+      "category": "其他",
+      "emoji": "🟢",
+      "unit": "份"
+    },
+    {
+      "name": "百合",
+      "category": "其他",
+      "emoji": "🌷",
+      "unit": "份"
+    },
+    {
+      "name": "蛋白粉",
+      "category": "其他",
+      "emoji": "🥤",
+      "unit": "份"
+    },
+    {
+      "name": "麦片",
+      "category": "其他",
+      "emoji": "🥣",
+      "unit": "袋"
+    },
+    {
+      "name": "咖啡",
+      "category": "其他",
+      "emoji": "☕",
+      "unit": "份"
+    },
+    {
+      "name": "茶叶",
+      "category": "其他",
+      "emoji": "🍵",
+      "unit": "份"
+    }
+  ]
+}

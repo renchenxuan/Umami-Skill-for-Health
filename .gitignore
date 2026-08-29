@@ -1,0 +1,6 @@
+# 本地测试产物
+.smoke-test.db*
+*.db-wal
+*.db-shm
+__pycache__/
+*.pyc
