@@ -18,6 +18,8 @@
 用法示例：
   python health_db.py init
   python health_db.py stats
+  python health_db.py export --output umami-health.json
+  python health_db.py import-preview --file umami-health.json
   python health_db.py ingredients add --name 鸡蛋 --quantity 5个
   python health_db.py diet log --meal 午餐 --foods '米饭,清蒸鲈鱼' --note "公司食堂"
   python health_db.py body log --weight 72.5 --fat 20.1
@@ -35,6 +37,7 @@ from datetime import date, datetime
 from pathlib import Path
 
 SCHEMA_VERSION = 1
+EXPORT_VERSION = 1
 MEAL_TYPES = ("早餐", "午餐", "晚餐", "加餐")
 GOAL_STATUSES = ("进行中", "已完成", "已暂停", "已取消")
 
@@ -144,6 +147,7 @@ def output(data, exit_code: int = 0):
 def fail(message: str, exit_code: int = 1):
     print(json.dumps({"ok": False, "error": message}, ensure_ascii=False, indent=2))
     sys.exit(exit_code)
+    sys.exit(exit_code)
 
 
 # ---------------------------------------------------------------- 数据库
@@ -243,6 +247,7 @@ def db_path(args) -> Path:
 def cmd_init(args, db: DB):
     db.conn.executescript(SCHEMA)
     version = db.one("SELECT value FROM meta WHERE key='schema_version'")
+    first_run = not bool(version)
     if not version:
         db.run("INSERT INTO meta(key, value) VALUES('schema_version', ?)", (str(SCHEMA_VERSION),))
     count = db.one("SELECT COUNT(*) AS c FROM foods")["c"]
@@ -258,6 +263,7 @@ def cmd_init(args, db: DB):
     output({
         "database": str(db_path(args)),
         "schema_version": SCHEMA_VERSION,
+        "first_run": first_run,
         "seeded_foods": seeded,
         "message": "数据库已就绪" + (f"，已内置 {seeded} 种常见食材" if seeded else "（已有数据，未重复灌入种子）"),
     })
@@ -703,15 +709,269 @@ def cmd_stats(args, db: DB):
     goals = db.q("SELECT * FROM health_goals WHERE archived_at IS NULL AND status='进行中' ORDER BY id DESC")
     body = db.q("SELECT * FROM body_metrics WHERE archived_at IS NULL ORDER BY date DESC, id DESC LIMIT 14")
     shopping = db.q("SELECT * FROM shopping_items WHERE archived_at IS NULL AND checked=0 ORDER BY id DESC")
+
+    recent_activity = []
+    for row in db.q("SELECT id, meal_type, foods, created_at FROM diet_logs "
+                    "WHERE archived_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 12"):
+        foods = json.loads(row["foods"])
+        names = "、".join(item.get("name", "") for item in foods[:3] if item.get("name"))
+        recent_activity.append({
+            "type": "diet", "id": row["id"],
+            "label": f"{row['meal_type']}：{names or '饮食记录'}",
+            "occurred_at": row["created_at"],
+        })
+    for row in db.q("SELECT id, activity_type, duration_min, created_at FROM workout_logs "
+                    "WHERE archived_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 12"):
+        recent_activity.append({
+            "type": "workout", "id": row["id"],
+            "label": f"{row['activity_type']} · {row['duration_min']} 分钟",
+            "occurred_at": row["created_at"],
+        })
+    for row in db.q("SELECT id, weight_kg, created_at FROM body_metrics "
+                    "WHERE archived_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 12"):
+        recent_activity.append({
+            "type": "body", "id": row["id"],
+            "label": f"体重 {row['weight_kg']} kg",
+            "occurred_at": row["created_at"],
+        })
+    for row in db.q("SELECT id, habit, value, created_at FROM habit_logs "
+                    "WHERE archived_at IS NULL ORDER BY created_at DESC, id DESC LIMIT 12"):
+        recent_activity.append({
+            "type": "habit", "id": row["id"],
+            "label": f"{row['habit']}：{row['value']}",
+            "occurred_at": row["created_at"],
+        })
+    recent_activity.sort(key=lambda item: (item["occurred_at"], item["id"]), reverse=True)
+
+    next_steps = []
+    if near:
+        next_steps.append({"type": "fridge", "label": f"先处理临期食材：{near[0]['name']}",
+                           "reason": near[0]["freshness_badge"]})
+    if not meals:
+        next_steps.append({"type": "diet", "label": "记录今天第一餐", "reason": "今天还没有饮食记录"})
+    if not workouts:
+        next_steps.append({"type": "workout", "label": "记录一次训练或散步", "reason": "今天还没有训练记录"})
+    if not habits:
+        next_steps.append({"type": "habit", "label": "完成一个习惯打卡", "reason": "今天还没有习惯记录"})
+    if goals:
+        next_steps.append({"type": "goal", "label": f"回看目标：{goals[0]['name']}", "reason": "保持今天的一小步"})
+
     output({
         "date": d,
         "ingredients": {"count": len(ingredients), "near_expiry": len(near),
                         "items": ingredients[:12]},
         "today": {"meals": meals, "workouts": workouts, "habits": habits},
+        "metrics": {
+            "diet_kcal": None,
+            "calorie_target": None,
+            "meal_count": len(meals),
+            "workout_minutes": sum(row["duration_min"] for row in workouts),
+            "habit_completed": len(habits),
+            "latest_weight": body[0]["weight_kg"] if body else None,
+        },
+        "next_steps": next_steps[:6],
+        "recent_activity": recent_activity[:12],
         "active_goals": goals,
         "body_metrics_recent": body,
         "shopping_unchecked": shopping,
+        "data_boundary": {
+            "local_scripts_only": True,
+            "host_ai_consent_required": True,
+            "note": "本地脚本不主动调用外部 API；宿主 AI 助手负责模型与隐私授权。",
+        },
     })
+
+
+# ---------------------------------------------------------------- 导出 / 导入
+
+EXPORT_SPECS = {
+    "ingredients": ("ingredients", ("id", "name", "quantity", "category", "source", "zone",
+                                       "added_at", "note", "created_at", "updated_at", "archived_at")),
+    "dietLogs": ("diet_logs", ("id", "date", "meal_type", "foods", "note",
+                                 "created_at", "updated_at", "archived_at")),
+    "workouts": ("workout_logs", ("id", "date", "activity_type", "duration_min", "detail",
+                                    "created_at", "updated_at", "archived_at")),
+    "bodyMetrics": ("body_metrics", ("id", "date", "weight_kg", "body_fat_pct", "note",
+                                       "created_at", "updated_at", "archived_at")),
+    "goals": ("health_goals", ("id", "name", "category", "target", "unit", "status",
+                                 "target_value", "current_value", "start_date", "end_date",
+                                 "created_at", "updated_at", "archived_at")),
+    "habits": ("habit_logs", ("id", "date", "habit", "value", "created_at", "updated_at", "archived_at")),
+    "shoppingItems": ("shopping_items", ("id", "name", "quantity", "checked", "created_at",
+                                            "updated_at", "archived_at")),
+    "recipes": ("recipes", ("id", "title", "ingredients", "steps", "nutrition_estimate", "source",
+                              "created_at", "updated_at", "archived_at")),
+}
+PREFERENCE_COLUMNS = ("id", "people_count", "taste_preference", "allergies", "cuisine_style", "days",
+                      "height_cm", "age", "gender", "activity_level")
+DEFAULT_PREFERENCES = {
+    "people_count": 2, "taste_preference": "家常", "allergies": "", "cuisine_style": "中餐",
+    "days": 7, "height_cm": None, "age": None, "gender": "", "activity_level": "久坐",
+}
+
+
+def _export_payload(db: DB) -> dict:
+    data = {"preferences": db.one("SELECT * FROM preferences WHERE id=1") or {}}
+    counts = {"preferences": 1 if data["preferences"] else 0}
+    for key, (table, columns) in EXPORT_SPECS.items():
+        rows = db.q(f"SELECT {', '.join(columns)} FROM {table} ORDER BY id")
+        data[key] = rows
+        counts[key] = len(rows)
+    return {
+        "exportVersion": EXPORT_VERSION,
+        "schemaVersion": SCHEMA_VERSION,
+        "exportedAt": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "data": data,
+        "counts": counts,
+    }
+
+
+def cmd_export(args, db: DB):
+    payload = _export_payload(db)
+    encoded = json.dumps(payload, ensure_ascii=False, indent=2, default=str)
+    if args.output:
+        destination = Path(args.output).expanduser()
+        if destination.resolve() == db_path(args).resolve():
+            raise ValidationError("导出文件不能覆盖当前 SQLite 数据库")
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(encoded + "\n", encoding="utf-8")
+        output({"file": str(destination), "counts": payload["counts"],
+                "message": "可恢复健康数据包已导出；未包含模型 Key 或其他系统凭据"})
+    output({"package": payload, "message": "可恢复健康数据包已生成；未包含模型 Key 或其他系统凭据"})
+
+
+def _read_import_package(args) -> dict:
+    source = Path(args.file).expanduser()
+    if not source.is_file():
+        raise ValidationError(f"导入文件不存在：{source}")
+    try:
+        package = json.loads(source.read_text(encoding="utf-8"))
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise ValidationError(f"导入文件不是可读取的合法 JSON：{exc}")
+    if not isinstance(package, dict) or package.get("exportVersion") != EXPORT_VERSION:
+        raise ValidationError(f"只支持 exportVersion={EXPORT_VERSION} 的膳待家健康数据包")
+    if package.get("schemaVersion") != SCHEMA_VERSION:
+        raise ValidationError(f"数据包 schemaVersion 必须为 {SCHEMA_VERSION}")
+    data = package.get("data")
+    expected = {"preferences", *EXPORT_SPECS.keys()}
+    if not isinstance(data, dict) or set(data) != expected:
+        raise ValidationError("数据包 data 字段不完整或包含不支持的字段，已拒绝导入")
+    preferences = data["preferences"]
+    if not isinstance(preferences, dict) or set(preferences) != set(PREFERENCE_COLUMNS):
+        raise ValidationError("data.preferences 字段不完整或包含未知字段")
+    if preferences.get("id") != 1:
+        raise ValidationError("data.preferences.id 必须为 1")
+    for key, (_table, columns) in EXPORT_SPECS.items():
+        rows = data[key]
+        if not isinstance(rows, list):
+            raise ValidationError(f"data.{key} 必须是数组")
+        seen = set()
+        for index, row in enumerate(rows):
+            if not isinstance(row, dict) or set(row) != set(columns):
+                raise ValidationError(f"data.{key}[{index}] 字段不完整或包含未知字段")
+            row_id = row.get("id")
+            if not isinstance(row_id, int) or isinstance(row_id, bool) or row_id < 1:
+                raise ValidationError(f"data.{key}[{index}].id 必须是正整数")
+            if row_id in seen:
+                raise ValidationError(f"data.{key} 包含重复 ID：{row_id}")
+            seen.add(row_id)
+            for field in ("foods", "ingredients", "steps", "nutrition_estimate"):
+                if field in row and row[field] is not None:
+                    try:
+                        json.loads(row[field])
+                    except (TypeError, json.JSONDecodeError) as exc:
+                        raise ValidationError(f"data.{key}[{index}].{field} 不是合法 JSON：{exc}")
+    return package
+
+
+def _preferences_are_default(row: dict | None) -> bool:
+    if not row:
+        return True
+    return all(row.get(key) == value for key, value in DEFAULT_PREFERENCES.items())
+
+
+def _import_plan(db: DB, package: dict) -> dict:
+    plan = {"rows": {}, "counts": {}, "conflicts": {}, "preferences_replace": False}
+    total_conflicts = 0
+    for key, (table, columns) in EXPORT_SPECS.items():
+        existing = {row["id"] for row in db.q(f"SELECT id FROM {table}")}
+        next_id = max(existing, default=0) + 1
+        planned = []
+        conflicts = 0
+        for original in package["data"][key]:
+            row = dict(original)
+            if row["id"] in existing:
+                conflicts += 1
+                while next_id in existing:
+                    next_id += 1
+                row["id"] = next_id
+                existing.add(next_id)
+                next_id += 1
+            else:
+                existing.add(row["id"])
+            planned.append(row)
+        plan["rows"][key] = (table, columns, planned)
+        plan["counts"][key] = len(planned)
+        plan["conflicts"][key] = conflicts
+        total_conflicts += conflicts
+
+    current_preferences = db.one("SELECT * FROM preferences WHERE id=1")
+    preferences_conflict = not _preferences_are_default(current_preferences)
+    plan["preferences_replace"] = not preferences_conflict
+    plan["conflicts"]["preferences"] = 1 if preferences_conflict else 0
+    plan["counts"]["preferences"] = 1
+    plan["total_conflicts"] = total_conflicts + (1 if preferences_conflict else 0)
+    return plan
+
+
+def cmd_import_preview(args, db: DB):
+    package = _read_import_package(args)
+    plan = _import_plan(db, package)
+    output({"counts": plan["counts"], "conflicts": plan["conflicts"],
+            "total_conflicts": plan["total_conflicts"],
+            "will_write": False,
+            "message": "预览只校验数据和冲突，不会修改数据库"})
+
+
+def _create_backup(db: DB, database: Path) -> Path:
+    timestamp = datetime.now().strftime("%Y%m%d-%H%M%S-%f")
+    backup = database.with_name(f"{database.name}.backup-{timestamp}")
+    backup_conn = sqlite3.connect(str(backup))
+    try:
+        db.conn.backup(backup_conn)
+    finally:
+        backup_conn.close()
+    return backup
+
+
+def cmd_import(args, db: DB):
+    if not args.yes:
+        raise ValidationError("导入会合并数据并先创建数据库备份；确认后请加 --yes")
+    package = _read_import_package(args)
+    plan = _import_plan(db, package)
+    database = db_path(args)
+    backup = _create_backup(db, database)
+    try:
+        db.conn.execute("BEGIN IMMEDIATE")
+        if plan["preferences_replace"]:
+            values = package["data"]["preferences"]
+            fields = ", ".join(column for column in PREFERENCE_COLUMNS if column != "id")
+            params = [values[column] for column in PREFERENCE_COLUMNS if column != "id"]
+            db.conn.execute(f"UPDATE preferences SET {fields} WHERE id=1", params)
+        for _key, (table, columns, rows) in plan["rows"].items():
+            placeholders = ", ".join("?" for _ in columns)
+            fields = ", ".join(columns)
+            for row in rows:
+                db.conn.execute(f"INSERT INTO {table} ({fields}) VALUES ({placeholders})",
+                                 [row[column] for column in columns])
+        db.conn.commit()
+    except Exception:
+        db.conn.rollback()
+        raise
+    output({"counts": plan["counts"], "conflicts": plan["conflicts"],
+            "total_conflicts": plan["total_conflicts"], "backup": str(backup),
+            "references_rewritten": 0,
+            "message": "健康数据包已合并；原数据库备份已保留。Skill 数据表无跨表 ID 引用。"})
 
 
 # ---------------------------------------------------------------- 参数解析
@@ -728,6 +988,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("init", help="初始化数据库（幂等，首次使用必须先执行）")
     sub.add_parser("stats", help="今日概览：冰箱/三餐/训练/打卡/目标/体重/购物")
+    p = sub.add_parser("export", help="导出可恢复健康数据包（不含模型 Key）")
+    p.add_argument("--output", help="写入 JSON 文件；不填则将数据包放在标准输出中")
+    p = sub.add_parser("import-preview", help="预览健康数据包（只校验，不写数据库）")
+    p.add_argument("--file", required=True, help="健康数据包 JSON 文件")
+    p = sub.add_parser("import", help="合并健康数据包（先备份，需明确确认）")
+    p.add_argument("--file", required=True, help="健康数据包 JSON 文件")
+    p.add_argument("--yes", action="store_true", help="确认备份并合并导入")
 
     p = sub.add_parser("ingredients", help="冰箱食材")
     ip = p.add_subparsers(dest="action", required=True)
@@ -848,6 +1115,9 @@ def build_parser() -> argparse.ArgumentParser:
 HANDLERS = {
     ("init", None): cmd_init,
     ("stats", None): cmd_stats,
+    ("export", None): cmd_export,
+    ("import-preview", None): cmd_import_preview,
+    ("import", None): cmd_import,
     ("ingredients", "list"): cmd_ingredients_list,
     ("ingredients", "add"): cmd_ingredients_add,
     ("ingredients", "update"): cmd_ingredients_update,
@@ -901,6 +1171,8 @@ def main():
         fail(str(e), 2)
     except sqlite3.Error as e:
         fail(f"数据库错误：{e}", 1)
+    except OSError as e:
+        fail(f"文件错误：{e}", 1)
     finally:
         db.close()
 
